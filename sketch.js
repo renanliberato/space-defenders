@@ -15,21 +15,26 @@ var particles = [];
 
 var time = 0;
 
+var w = window.innerWidth;
+var h = window.innerHeight;
+
+var numOfTurrets = 6;
+
 function setup() {
-  createCanvas(256, 256);
+  canvas = createCanvas(w, h);
   frameRate(30);
 
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < 10; i++) {
     /**
      * @type {Enemy}
      */
-    var enemy = GameObject.instantiate(new Enemy(), randomPointAroundCenter(96 + Math.random() * 64).add(new Vec2(128, 128)));
+    var enemy = GameObject.instantiate(new Enemy(), randomPointAroundCenter(96 + Math.random() * 256).add(new Vec2(center.x, center.y)));
     enemies.push(enemy)
   }
 
-  turrets.push(GameObject.instantiate(new Turret(), Vec2.zero()));
-  turrets.push(GameObject.instantiate(new Turret(), Vec2.zero()));
-  turrets.push(GameObject.instantiate(new Turret(), Vec2.zero()));
+  for (let i = 0; i < numOfTurrets; i++) {
+    turrets.push(GameObject.instantiate(new Turret(), Vec2.zero()));
+  }
 }
 
 const pressed = new Set();
@@ -46,10 +51,11 @@ function keyReleased(evt) {
   pressed.delete(evt.code);
 }
 
-var center = new Vec2(128, 128)
+var center = new Vec2(w / 2, h / 2)
 var baseRadius = 50;
 
 function draw() {
+  deltaTime /= 1000;
   time += deltaTime;
 
   // update enemies
@@ -71,6 +77,7 @@ function draw() {
   // update turrets
   for (let i = turrets.length - 1; i >= 0; i--) {
     const t = turrets[i];
+
     if (t.isCollidingWithEnemy()) {
       turrets.splice(i, 1)
       t.deathParticles();
@@ -92,11 +99,6 @@ function draw() {
 
   background(20);
 
-  // render base
-  stroke('black')
-  fill('yellow')
-  circle(128, 128, baseRadius + 2 * sin(time / 300))
-
   // render enemies
   enemies.forEach(e => {
     stroke('black')
@@ -113,10 +115,21 @@ function draw() {
     t.renderShootLine()
   })
 
+  // render base
+  stroke('black')
+  fill('yellow')
+  circle(center.x, center.y, baseRadius + 2 * sin(time * 3))
+
   // render particles
   particles.forEach(p => {
     stroke('black')
     fill(p.color)
     circle(p.pos.x, p.pos.y, p.radius)
   })
+
+
+
+  // debug
+  fill('white')
+  text(frameRate(), 10, 20)
 }

@@ -2,13 +2,15 @@ class Turret extends GameObject {
 
     constructor() {
         super();
+        this.undockSpeed = 30;
         this.distanceFromCenter = 60;
-        this.angle = Math.random() * Math.PI * 2;
+        this.angle = Math.PI * 2 / numOfTurrets * turrets.length;
         this.rotateSpeed = 0.01;
         this.radius = 10;
         this.damage = 1;
         this.shootRange = 100;
         this.shootRadius = 10;
+        this.lastShootTime = 0;
         this.shootCooldown = 1;
 
         /**
@@ -32,37 +34,50 @@ class Turret extends GameObject {
     *aiLoop() {
         yield;
 
-        var state = 'patrol'
+        var state = 'undocking'
+        var undockTarget = center.add(pointAroundCenter(this.angle, this.distanceFromCenter));
+        this.pos = center;
         while (true) {
             switch (state) {
-                case 'patrol':
-                    this.rotateRight();
-                    this.enemiesAtRange = this.getEnemiesAtRange();
-                    if (this.enemiesAtRange.length > 0) {
-                        this.target = this.findTarget();
-                        state = 'attack';
-                        break;
-                    }
-                    break;
-                case 'attack':
-                    if (this.target == null || this.target.health <= 0) {
-                        this.target = null;
+                case 'undocking':
+                    this.pos = this.pos.moveTowards(undockTarget, this.undockSpeed * deltaTime)
+
+                    if (this.pos.distance(undockTarget) <= 0.1) {
                         state = 'patrol';
                         break;
                     }
-
-                    if (frameCount % (this.shootCooldown * 30) == 0) {
-                        this.shoot();
+                    break;
+                case 'patrol':
+                    this.rotateRight();
+                    this.target = this.getEnemyAtRange();
+                    if (this.target != null) {
+                        // state = 'attack';
+                        if (frameCount % (this.shootCooldown * 30) == 0) {
+                            this.shoot();
+                            this.lastShootTime = time;
+                        }
+                        break;
                     }
                     break;
+                // case 'attack':
+                //     if (this.target == null || this.target.health <= 0) {
+                //         this.target = null;
+                //         state = 'patrol';
+                //         break;
+                //     }
+
+                //     if (frameCount % (this.shootCooldown * 30) == 0) {
+                //         this.shoot();
+                //     }
+                //     break;
             }
             yield;
         }
     }
 
-    getEnemiesAtRange() {
+    getEnemyAtRange() {
         var dir = this.pos.sub(center).normalize();
-        return sphereCast(enemies, this.pos, dir, this.shootRange, this.shootRadius);
+        return sphereCast(enemies, this.pos, dir, this.shootRange, this.shootRadius).find(a => true);
     }
 
     findTarget() {
@@ -99,21 +114,6 @@ class Turret extends GameObject {
             line(this.pos.x, this.pos.y, enemyHit.pos.x, enemyHit.pos.y)
         })
         this.enemiesHit = [];
-    }
-
-    rotateToTarget() {
-        if (this.target == null) {
-            return;
-        }
-
-        var targetAngle = center.angleTo(this.target.pos);
-        var turretAngle = center.angleTo(this.pos);
-
-        if (targetAngle > turretAngle) {
-            this.rotateRight();
-        } else {
-            this.rotateLeft();
-        }
     }
 
     rotateRight() {
