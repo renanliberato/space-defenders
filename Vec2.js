@@ -52,6 +52,35 @@ class Vec2 {
     /**
      *
      * @param {Vec2} other
+     * @returns {Vec2}
+     */
+    sub(other) {
+        return new Vec2(this.x - other.x, this.y - other.y);
+    }
+
+    normalize() {
+        var newVec = new Vec2();
+        var norm = Math.sqrt(this.x * this.x + this.y * this.y);
+        if (norm != 0) { // as3 return 0,0 for a this of zero length
+            newVec.x = this.x / norm;
+            newVec.y = this.y / norm;
+        }
+
+        return newVec;
+    }
+
+    /**
+     *
+     * @param {number} x
+     * @returns {Vec2}
+     */
+    multScalar(x) {
+        return new Vec2(this.x * x, this.y * x);
+    }
+
+    /**
+     *
+     * @param {Vec2} other
      *
      * @returns {number}
      */
