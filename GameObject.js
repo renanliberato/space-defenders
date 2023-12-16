@@ -1,3 +1,7 @@
+class Circle {
+
+}
+
 class GameObject {
 
     constructor() {
@@ -14,6 +18,11 @@ class GameObject {
     static instantiate(go, pos) {
         go.pos = pos;
 
+        go.start();
         return go;
     }
+
+    start() { }
+
+    update() { }
 }

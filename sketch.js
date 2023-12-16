@@ -9,6 +9,16 @@ var turrets = [];
 var enemies = [];
 
 /**
+ * @type {Array<Meteor>}
+ */
+var meteors = [];
+
+/**
+ * @type {Array<Miner>}
+ */
+var miners = [];
+
+/**
  * @type {Array<Particle>}
  */
 var particles = [];
@@ -19,6 +29,7 @@ var w = window.innerWidth;
 var h = window.innerHeight;
 
 var numOfTurrets = 6;
+var numOfMiners = 3;
 
 function setup() {
   canvas = createCanvas(w, h);
@@ -34,6 +45,14 @@ function setup() {
 
   for (let i = 0; i < numOfTurrets; i++) {
     turrets.push(GameObject.instantiate(new Turret(), Vec2.zero()));
+  }
+
+  for (let i = 0; i < 1; i++) {
+    meteors.push(GameObject.instantiate(new Meteor(), center.add(randomPointAroundCenter(100))));
+  }
+
+  for (let i = 0; i < 3; i++) {
+    miners.push(GameObject.instantiate(new Miner(), center.add(pointAroundCenter(Math.PI * 2 / numOfMiners * i, 40))));
   }
 }
 
@@ -51,6 +70,7 @@ function keyReleased(evt) {
   pressed.delete(evt.code);
 }
 
+var screenBounds = new Rect(new Vec2(0, 0), new Vec2(w, h));
 var center = new Vec2(w / 2, h / 2)
 var baseRadius = 50;
 
@@ -86,6 +106,16 @@ function draw() {
     t.ai.next();
   }
 
+  for (let i = meteors.length - 1; i >= 0; i--) {
+    const m = meteors[i];
+    m.pos = m.pos.add(m.velocity);
+  }
+
+  for (let i = miners.length - 1; i >= 0; i--) {
+    const m = miners[i];
+    m.update();
+  }
+
   // update particles
   for (let i = particles.length - 1; i >= 0; i--) {
     const p = particles[i];
@@ -97,7 +127,7 @@ function draw() {
     }
   }
 
-  background(20);
+  background('#20043d');
 
   // render enemies
   enemies.forEach(e => {
@@ -113,6 +143,22 @@ function draw() {
     circle(t.pos.x, t.pos.y, t.radius)
 
     t.renderShootLine()
+  })
+
+  // render meteors
+  meteors.forEach(m => {
+    stroke('black')
+    fill('grey')
+    circle(m.pos.x, m.pos.y, m.radius)
+  })
+
+  // render miners
+  miners.forEach(m => {
+    stroke('black')
+    fill('orange')
+    circle(m.pos.x, m.pos.y, m.radius)
+
+    m.renderMiningLine();
   })
 
   // render base
@@ -131,5 +177,5 @@ function draw() {
 
   // debug
   fill('white')
-  text(frameRate(), 10, 20)
+  text(Math.round(frameRate()), 10, 20)
 }

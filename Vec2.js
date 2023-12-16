@@ -108,4 +108,11 @@ class Vec2 {
             a.y / magnitude * maxDistanceDelta
         ));
     }
+
+    rotate(angle) {
+        return new Vec2(
+            this.x * cos(angle) - this.y * sin(angle),
+            this.y * cos(angle) + this.x * sin(angle)
+        );
+    }
 }
