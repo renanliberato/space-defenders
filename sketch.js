@@ -92,7 +92,6 @@ function draw() {
 
     if (e.health <= 0) {
       enemies.splice(i, 1)
-      e.deathParticles();
       e.destroy();
     }
   }
@@ -101,10 +100,12 @@ function draw() {
   for (let i = turrets.length - 1; i >= 0; i--) {
     const t = turrets[i];
 
-    if (t.isCollidingWithEnemy()) {
+    var collidingEnemy = t.getEnemyCollision();
+    if (collidingEnemy) {
       turrets.splice(i, 1)
-      t.deathParticles();
       t.destroy();
+      collidingEnemy.destroy();
+      enemies.splice(enemies.findIndex(e => e == collidingEnemy), 1)
       continue;
     }
     t.ai.next();

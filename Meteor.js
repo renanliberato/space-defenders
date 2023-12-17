@@ -1,6 +1,6 @@
 class Meteor extends GameObject {
     constructor() {
-        super();
+        super('meteor');
         this.radius = 10;
         this.color = 'grey';
     }

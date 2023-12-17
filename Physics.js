@@ -21,3 +21,13 @@ function sphereCast(targets, origin, direction, distance, radius) {
 
     return collided;
 }
+
+/**
+ * 
+ * @param {GameObject} obj 
+ * @returns {Array<GameObject>}
+ */
+function getCollisions(obj, tag) {
+    var all = tag == '*'
+    return Scene.instance.gameObjects.filter(g => (all || g.tag == tag) && obj.pos.distance(g.pos) < obj.radius + g.radius);
+}

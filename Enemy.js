@@ -1,6 +1,6 @@
 class Enemy extends GameObject {
     constructor() {
-        super();
+        super('enemy');
         this.health = 1;
         this.radius = 5;
         this.velocity = new Vec2(1, 1);
@@ -22,6 +22,10 @@ class Enemy extends GameObject {
             p.color = 'red';
             particles.push(p)
         }
+    }
+
+    onDestroy() {
+        this.deathParticles();
     }
 
     deathParticles() {

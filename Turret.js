@@ -1,7 +1,7 @@
 class Turret extends GameObject {
 
     constructor() {
-        super();
+        super('turret');
         this.undockSpeed = 30;
         this.distanceFromCenter = 60;
         this.angle = Math.PI * 2 / numOfTurrets * turrets.length;
@@ -103,8 +103,8 @@ class Turret extends GameObject {
         })
     }
 
-    isCollidingWithEnemy() {
-        return enemies.find(e => e.pos.distance(this.pos) <= e.radius + this.radius)
+    getEnemyCollision() {
+        return getCollisions(this, 'enemy').find(e => true);
     }
 
     renderShootLine() {
@@ -133,6 +133,10 @@ class Turret extends GameObject {
         }
 
         this.pos = center.add(pointAroundCenter(this.angle, this.distanceFromCenter));
+    }
+
+    onDestroy() {
+        this.deathParticles();
     }
 
     deathParticles() {

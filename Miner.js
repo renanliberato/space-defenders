@@ -1,6 +1,6 @@
 class Miner extends GameObject {
     constructor() {
-        super();
+        super('miner');
         this.speed = 100;
         this.radius = 5;
         this.color = 'orange';

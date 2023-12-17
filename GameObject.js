@@ -4,7 +4,11 @@ class Circle {
 
 class GameObject {
 
-    constructor() {
+    /**
+     * @param {string} tag 
+     */
+    constructor(tag) {
+        this.tag = tag;
         this.pos = Vec2.zero();
         this.velocity = Vec2.zero();
         this.radius = 0;
@@ -32,8 +36,10 @@ class GameObject {
     update() { }
 
     destroy() {
+        this.onDestroy();
         Scene.instance.removeGameObject(this);
     }
+    onDestroy() { }
 
     getCollicions() { }
 }
