@@ -3,7 +3,7 @@ class Enemy extends GameObject {
         super('enemy');
         this.health = 1;
         this.radius = 5;
-        this.velocity = new Vec2(1, 1);
+        this.velocity = new Vec2(0.1, 0.1);
     }
 
     /**

@@ -30,14 +30,25 @@ var time = 0;
 var w = window.innerWidth;
 var h = window.innerHeight;
 
-var numOfTurrets = 6;
+const params = new Proxy(new URLSearchParams(window.location.search), {
+  get: (searchParams, prop) => searchParams.get(prop),
+});
+
+var numOfTurrets = params.numOfTurrets;
+if (!numOfTurrets) {
+  numOfTurrets = 3;
+}
+var numOfEnemies = params.numOfEnemies;
+if (!numOfEnemies) {
+  numOfEnemies = 10;
+}
 var numOfMiners = 3;
 
 function setup() {
   canvas = createCanvas(w, h);
   frameRate(30);
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < numOfEnemies; i++) {
     /**
      * @type {Enemy}
      */
