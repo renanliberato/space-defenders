@@ -1,7 +1,7 @@
 class Meteor extends GameObject {
     constructor() {
         super();
-        this.radius = 20;
+        this.radius = 10;
         this.color = 'grey';
     }
 

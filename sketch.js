@@ -1,3 +1,5 @@
+var scene = new Scene();
+
 /**
  * @type {Array<Turret>}
  */
@@ -72,7 +74,7 @@ function keyReleased(evt) {
 
 var screenBounds = new Rect(new Vec2(0, 0), new Vec2(w, h));
 var center = new Vec2(w / 2, h / 2)
-var baseRadius = 50;
+var baseDiameter = 50;
 
 function draw() {
   deltaTime /= 1000;
@@ -84,13 +86,14 @@ function draw() {
 
     e.pos = e.pos.moveTowards(center, e.velocity.magnitude);
 
-    if (e.pos.distance(center) < e.radius / 2 + baseRadius / 2) {
+    if (e.pos.distance(center) < e.radius + baseDiameter / 2) {
       e.takeDamage(e.health);
     }
 
     if (e.health <= 0) {
       enemies.splice(i, 1)
       e.deathParticles();
+      e.destroy();
     }
   }
 
@@ -101,6 +104,7 @@ function draw() {
     if (t.isCollidingWithEnemy()) {
       turrets.splice(i, 1)
       t.deathParticles();
+      t.destroy();
       continue;
     }
     t.ai.next();
@@ -133,14 +137,14 @@ function draw() {
   enemies.forEach(e => {
     stroke('black')
     fill('red')
-    circle(e.pos.x, e.pos.y, e.radius)
+    circle(e.pos.x, e.pos.y, e.diameter)
   })
 
   // render turrets
   turrets.forEach(t => {
     stroke('black')
     fill('white')
-    circle(t.pos.x, t.pos.y, t.radius)
+    circle(t.pos.x, t.pos.y, t.diameter)
 
     t.renderShootLine()
   })
@@ -149,14 +153,14 @@ function draw() {
   meteors.forEach(m => {
     stroke('black')
     fill('grey')
-    circle(m.pos.x, m.pos.y, m.radius)
+    circle(m.pos.x, m.pos.y, m.diameter)
   })
 
   // render miners
   miners.forEach(m => {
     stroke('black')
     fill('orange')
-    circle(m.pos.x, m.pos.y, m.radius)
+    circle(m.pos.x, m.pos.y, m.diameter)
 
     m.renderMiningLine();
   })
@@ -164,13 +168,13 @@ function draw() {
   // render base
   stroke('black')
   fill('yellow')
-  circle(center.x, center.y, baseRadius + 2 * sin(time * 3))
+  circle(center.x, center.y, baseDiameter + 2 * sin(time * 3))
 
   // render particles
   particles.forEach(p => {
     stroke('black')
     fill(p.color)
-    circle(p.pos.x, p.pos.y, p.radius)
+    circle(p.pos.x, p.pos.y, p.diameter)
   })
 
 

@@ -2,8 +2,8 @@ class Enemy extends GameObject {
     constructor() {
         super();
         this.health = 1;
-        this.radius = 10;
-        this.velocity = new Vec2(0.1, 0.1);
+        this.radius = 5;
+        this.velocity = new Vec2(1, 1);
     }
 
     /**
@@ -17,7 +17,7 @@ class Enemy extends GameObject {
             var p = new Particle();
             p.pos = this.pos.add(randomPointAroundCenter(5))
             p.velocity = randomPointAroundCenter(0.3)
-            p.radius = 3
+            p.radius = 2
             p.dr = -0.2
             p.color = 'red';
             particles.push(p)
@@ -29,7 +29,7 @@ class Enemy extends GameObject {
             var p = new Particle();
             p.pos = this.pos.add(randomPointAroundCenter(5))
             p.velocity = randomPointAroundCenter(0.3)
-            p.radius = 5
+            p.radius = 3
             p.dr = -0.1
             p.color = 'red';
             particles.push(p)

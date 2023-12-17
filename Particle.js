@@ -6,4 +6,6 @@ class Particle {
         this.dr = 0;
         this.radius = 1;
     }
+
+    get diameter() { return this.radius * 2; }
 }
