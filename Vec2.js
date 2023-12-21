@@ -58,6 +58,10 @@ class Vec2 {
         return new Vec2(this.x - other.x, this.y - other.y);
     }
 
+    get normalized() {
+        return this.normalize();
+    }
+
     normalize() {
         var newVec = new Vec2();
         var norm = Math.sqrt(this.x * this.x + this.y * this.y);

@@ -4,9 +4,11 @@ class Turret extends GameObject {
         super('turret');
         this.undockSpeed = 30;
         this.distanceFromCenter = 60;
-        this.angle = Math.PI * 2 / numOfTurrets * turrets.length;
+        this.angle = Math.PI * 2 / numOfTurrets * Scene.instance.getGameObjectsByTag('turret').length;
         this.rotateSpeed = 0.01;
         this.radius = 5;
+        this.stroke = 'black';
+        this.fill = 'white';
         this.damage = 1;
         this.shootRange = 100;
         this.shootRadius = 10;
@@ -29,6 +31,16 @@ class Turret extends GameObject {
         this.enemiesAtRange = [];
 
         this.ai = this.aiLoop();
+    }
+
+    update() {
+        var collidingEnemy = this.getEnemyCollision();
+        if (collidingEnemy) {
+            this.destroy();
+            collidingEnemy.destroy();
+            return;
+        }
+        this.ai.next();
     }
 
     *aiLoop() {
@@ -77,7 +89,7 @@ class Turret extends GameObject {
 
     getEnemyAtRange() {
         var dir = this.pos.sub(center).normalize();
-        return sphereCast(enemies, this.pos, dir, this.shootRange, this.shootRadius).find(a => true);
+        return sphereCast(Scene.instance.getGameObjectsByTag('meteor'), this.pos, dir, this.shootRange, this.shootRadius).find(a => true);
     }
 
     findTarget() {
@@ -90,7 +102,7 @@ class Turret extends GameObject {
         }
 
         var dir = this.target.pos.sub(this.pos).normalize();
-        this.enemiesHit = sphereCast(enemies, this.pos, dir, this.shootRange, this.shootRadius);
+        this.enemiesHit = sphereCast(Scene.instance.getGameObjectsByTag('meteor'), this.pos, dir, this.shootRange, this.shootRadius);
         if (this.enemiesHit.length > 1) {
             this.enemiesHit = [this.enemiesHit[0]];
         }
@@ -105,6 +117,11 @@ class Turret extends GameObject {
 
     getEnemyCollision() {
         return getCollisions(this, 'enemy').find(e => true);
+    }
+
+    render() {
+        super.render();
+        this.renderShootLine();
     }
 
     renderShootLine() {
@@ -146,7 +163,7 @@ class Turret extends GameObject {
             p.velocity = randomPointAroundCenter(0.3)
             p.radius = 5
             p.dr = -0.1
-            particles.push(p)
+            particleSystem.particles.push(p)
         }
     }
 }

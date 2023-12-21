@@ -12,6 +12,8 @@ class GameObject {
         this.pos = Vec2.zero();
         this.velocity = Vec2.zero();
         this.radius = 0;
+        this.fill = 'white';
+        this.stroke = 'black';
     }
 
     get diameter() { return this.radius * 2; }
@@ -35,11 +37,25 @@ class GameObject {
 
     update() { }
 
+    render() {
+        if (this.radius > 0) {
+            stroke(this.stroke)
+            fill(this.fill)
+            circle(this.pos.x, this.pos.y, this.diameter);
+        }
+    }
+
     destroy() {
         this.onDestroy();
         Scene.instance.removeGameObject(this);
     }
     onDestroy() { }
 
-    getCollicions() { }
+    tryMoveWithVelocity() {
+        var newPos = this.pos.add(this.velocity)
+        if (checkSphere(Scene.instance.gameObjects.filter(g => g != this), newPos, this.radius).length > 0) {
+            return;
+        }
+        this.pos = newPos;
+    }
 }

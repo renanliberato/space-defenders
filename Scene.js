@@ -13,6 +13,10 @@ class Scene {
         Scene.instance = this;
     }
 
+    getGameObjectsByTag(tag) {
+        return this.gameObjects.filter(go => go.tag == tag);
+    }
+
     addGameObject(go) {
         this.gameObjects.push(go);
     }

@@ -1,3 +1,24 @@
+class Cooldown {
+    /**
+     * 
+     * @param {number} cooldown 
+     */
+    constructor(cooldown) {
+        this.cooldown = cooldown;
+        this.lastExecution = 0;
+    }
+
+    checkExecuteAndUpdate() {
+        if (time >= this.lastExecution + this.cooldown) {
+            this.lastExecution = time;
+
+            return true;
+        }
+
+        return false;
+    }
+}
+
 /**
  * @param {Array<GameObject>} targets 
  * @param {Vec2} origin 
@@ -19,6 +40,23 @@ function sphereCast(targets, origin, direction, distance, radius) {
         })
     }
 
+    return collided;
+}
+
+/**
+ * @param {Array<GameObject>} targets 
+ * @param {Vec2} origin 
+ * @param {number} radius 
+ * 
+ * @returns {Array<GameObject>}
+ */
+function checkSphere(targets, point, radius) {
+    var collided = [];
+    targets.forEach(t => {
+        if (point.distance(t.pos) <= radius) {
+            collided.push(t);
+        }
+    })
     return collided;
 }
 

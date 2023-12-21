@@ -1,9 +1,12 @@
+//   GameObject.instantiate(new Miner(), center.add(pointAroundCenter(Math.PI * 2 / numOfMiners * i, 40)));
+
 class Miner extends GameObject {
     constructor() {
         super('miner');
         this.speed = 100;
         this.radius = 5;
-        this.color = 'orange';
+        this.stroke = 'black';
+        this.fill = 'orange';
 
         /**
          * @type {Meteor}
@@ -34,13 +37,13 @@ class Miner extends GameObject {
 
     update() {
         if (this.target == null) {
-            this.target = meteors.find(m => screenBounds.contains(m.pos));
+            this.target = Scene.instance.getGameObjectsByTag('meteor').find(m => AppScreen.bounds.contains(m.pos));
             this.targetAngleDock = Math.PI * 2 * Math.random();
         }
 
         if (this.target != null) {
             var dockPoint = this.target.pos.add(pointAroundCenter(this.targetAngleDock, this.target.radius + this.radius + 10));
-            if (!screenBounds.contains(this.target.pos)) {
+            if (!AppScreen.bounds.contains(this.target.pos)) {
                 this.target = null;
                 return;
             } else {
@@ -67,8 +70,13 @@ class Miner extends GameObject {
             p.color = 'grey';
             p.radius = 2;
             p.dr = -0.1;
-            particles.push(p);
+            particleSystem.particles.push(p);
         }
+    }
+
+    render() {
+        super.render();
+        this.renderMiningLine();
     }
 
     renderMiningLine() {
