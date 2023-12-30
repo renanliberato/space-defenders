@@ -41,6 +41,7 @@ class Enemy extends GameObject {
     }
 
     onDestroy() {
+        super.onDestroy();
         this.deathParticles();
     }
 

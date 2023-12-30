@@ -153,6 +153,7 @@ class Turret extends GameObject {
     }
 
     onDestroy() {
+        super.onDestroy();
         this.deathParticles();
     }
 

@@ -14,6 +14,8 @@ class GameObject {
         this.radius = 0;
         this.fill = 'white';
         this.stroke = 'black';
+        this.collidable = false;
+        this.destroyed = false;
     }
 
     get diameter() { return this.radius * 2; }
@@ -49,7 +51,10 @@ class GameObject {
         this.onDestroy();
         Scene.instance.removeGameObject(this);
     }
-    onDestroy() { }
+
+    onDestroy() {
+        this.destroyed = true;
+    }
 
     tryMoveWithVelocity() {
         var newPos = this.pos.add(this.velocity)

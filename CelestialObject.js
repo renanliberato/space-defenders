@@ -4,10 +4,21 @@ class Universe {
 }
 
 class CelestialObject extends GameObject {
-    constructor(tag) {
+    constructor(tag, radius, surfaceGravity, fill) {
         super(tag);
 
-        this.mass = 1;
+        this.fill = fill;
+        this.radius = radius;
+
+        /**
+         * @type {number}
+         */
+        this.surfaceGravity = surfaceGravity;
+
+        /**
+         * @type {number}
+         */
+        this.mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
     }
 
     /**
@@ -20,31 +31,51 @@ class CelestialObject extends GameObject {
             const otherBody = allObjects[i];
 
             if (otherBody != this) {
-                var sqrDst = otherBody.pos.distance(this.pos);
-                var forceDir = otherBody.pos.sub(this.pos).normalized;
+                var dir = otherBody.pos.sub(this.pos);
+                var sqrDst = dir.magnitude;
+                var forceDir = dir.normalized;
 
                 var acceleration = forceDir
-                    .multScalar(Universe.gravitationalConstant)
-                    .multScalar(otherBody.mass)
-                    .multScalar(1 / sqrDst);
+                    .multScalar(Universe.gravitationalConstant * otherBody.mass * (1 / sqrDst));
 
                 this.acceleration = acceleration;
                 this.velocity = this.velocity.add(acceleration.multScalar(timeStep));
             }
         }
+
+        // var collidable = Scene.instance.getCollidableGameObjects().filter(g => g != this);
+        // while (checkSphere(
+        //     collidable,
+        //     this.pos.add(posDelta),
+        //     this.radius).length > 0) {
+        //     console.log(`trying again ${frameCount}`)
+        //     posDelta = posDelta.sub(this.velocity.multScalar(timeStep / 10));
+        // }
     }
 
     updatePosition(timeStep) {
-        this.pos = this.pos.add(this.velocity.multScalar(timeStep))
+        var posDelta = this.velocity.multScalar(timeStep);
+
+        this.pos = this.pos.add(posDelta)
+    }
+
+    update() {
+        this.updatePosition(deltaTime)
     }
 
     render() {
         super.render()
 
-        fill('white')
-        stroke('white')
-        textAlign('center')
-        text(`${this.pos.x.toFixed(0)},${this.pos.y.toFixed(0)}`, this.pos.x, this.pos.y - this.radius - 15)
-        text(`${this.velocity.x.toFixed(2)},${this.velocity.y.toFixed(2)}`, this.pos.x, this.pos.y - this.radius - 2)
+        if (this.radius > 10) {
+            // debug
+            fill('white')
+            stroke('white')
+            textAlign('center')
+            textSize(10)
+            text(`${this.pos.x.toFixed(0)},${this.pos.y.toFixed(0)}`, this.pos.x, this.pos.y - this.radius - 15)
+            var lineEnd = this.pos.add(this.velocity.normalized.multScalar(5))
+            line(this.pos.x, this.pos.y, lineEnd.x, lineEnd.y)
+            text(`${(this.velocity.magnitude * deltaTime).toFixed(1)}u/s`, this.pos.x, this.pos.y - this.radius - 2)
+        }
     }
 }

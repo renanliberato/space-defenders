@@ -1,5 +1,5 @@
 function randomPointAroundCenter(radius) {
-    var angle = Math.random() * Math.PI * 2;
+    var angle = random() * Math.PI * 2;
 
     return new Vec2(Math.cos(angle) * radius, Math.sin(angle) * radius);
 }
@@ -17,4 +17,14 @@ function randomPointOutOfScreen() {
 
     pos = pos.sub(velocity.multScalar(10))
     return pos;
+}
+
+/**
+ * 
+ * @template T
+ * @param {T} obj 
+ * @param {(T) => void} action 
+ */
+function then(obj, action) {
+    action(obj)
 }

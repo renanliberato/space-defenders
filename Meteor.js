@@ -1,12 +1,8 @@
 class Meteor extends CelestialObject {
-    constructor() {
-        super('meteor');
-        this.radius = 10;
-        this.fill = 'grey';
-        this.stroke = 'black';
-        this.mass = 10;
-
-        this.velocity = new Vec2(0, 100)
+    constructor(radius) {
+        super('meteor', radius, radius / 1000, 'grey');
+        this.mass = radius;
+        this.collidable = true;
     }
 
     start() {
@@ -20,7 +16,31 @@ class Meteor extends CelestialObject {
     }
 
     update() {
+        super.update();
         // this.tryMoveWithVelocity();
         // this.velocity.add(center.sub(this.pos))
+    }
+
+    render() {
+        noStroke()
+        fill(this.fill)
+        circle(this.pos.x, this.pos.y, this.diameter);
+    }
+
+    onDestroy() {
+        super.onDestroy();
+        this.deathParticles();
+    }
+
+    deathParticles() {
+        for (let ip = 0; ip < 10; ip++) {
+            var p = new Particle();
+            p.pos = this.pos.add(randomPointAroundCenter(5))
+            p.velocity = randomPointAroundCenter(0.3)
+            p.radius = 3
+            p.dr = -0.1
+            p.color = this.fill;
+            particleSystem.particles.push(p)
+        }
     }
 }

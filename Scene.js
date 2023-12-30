@@ -17,6 +17,10 @@ class Scene {
         return this.gameObjects.filter(go => go.tag == tag);
     }
 
+    getCollidableGameObjects(tag) {
+        return this.gameObjects.filter(go => go.collidable);
+    }
+
     addGameObject(go) {
         this.gameObjects.push(go);
     }

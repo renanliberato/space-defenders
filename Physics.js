@@ -43,18 +43,32 @@ function sphereCast(targets, origin, direction, distance, radius) {
     return collided;
 }
 
+class Collision {
+    constructor(go, normal) {
+        /**
+         * @type {GameObject}
+         */
+        this.gameObject = go;
+
+        /**
+         * @type {Vec2}
+         */
+        this.normal = normal;
+    }
+}
+
 /**
  * @param {Array<GameObject>} targets 
  * @param {Vec2} origin 
  * @param {number} radius 
  * 
- * @returns {Array<GameObject>}
+ * @returns {Array<Collision>}
  */
 function checkSphere(targets, point, radius) {
     var collided = [];
     targets.forEach(t => {
-        if (point.distance(t.pos) <= radius) {
-            collided.push(t);
+        if (point.distance(t.pos) <= (radius + t.radius)) {
+            collided.push(new Collision(t, t.pos.sub(point).normalized));
         }
     })
     return collided;
