@@ -119,4 +119,15 @@ class Vec2 {
             this.y * cos(angle) + this.x * sin(angle)
         );
     }
+
+    serialize() {
+        return {
+            x: this.x,
+            y: this.y
+        };
+    }
+
+    static deserialize(obj) {
+        return new Vec2(obj.x, obj.y);
+    }
 }

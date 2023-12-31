@@ -1,0 +1,68 @@
+{
+    "gameObjects": [
+        {
+            "class": "Planet",
+            "tag": "planet",
+            "pos": {
+                "x": 0,
+                "y": 150
+            },
+            "velocity": {
+                "x": 187,
+                "y": 0
+            },
+            "radius": 25,
+            "fill": "yellow",
+            "stroke": "black",
+            "mass": 6250000
+        },
+        {
+            "class": "CelestialObject",
+            "tag": "moon",
+            "pos": {
+                "x": 0,
+                "y": -200
+            },
+            "velocity": {
+                "x": -450,
+                "y": 0
+            },
+            "radius": 10,
+            "fill": "orange",
+            "stroke": "black",
+            "mass": 70000
+        },
+        {
+            "class": "Planet",
+            "tag": "planet",
+            "pos": {
+                "x": 0,
+                "y": -150
+            },
+            "velocity": {
+                "x": -187,
+                "y": 0
+            },
+            "radius": 25,
+            "fill": "yellow",
+            "stroke": "black",
+            "mass": 6250000
+        },
+        {
+            "class": "CelestialObject",
+            "tag": "moon",
+            "pos": {
+                "x": 0,
+                "y": 200
+            },
+            "velocity": {
+                "x": 450,
+                "y": 0
+            },
+            "radius": 10,
+            "fill": "orange",
+            "stroke": "black",
+            "mass": 70000
+        }
+    ]
+}

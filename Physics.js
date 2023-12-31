@@ -9,8 +9,8 @@ class Cooldown {
     }
 
     checkExecuteAndUpdate() {
-        if (time >= this.lastExecution + this.cooldown) {
-            this.lastExecution = time;
+        if (Time.time >= this.lastExecution + this.cooldown) {
+            this.lastExecution = Time.time;
 
             return true;
         }

@@ -28,3 +28,15 @@ function randomPointOutOfScreen() {
 function then(obj, action) {
     action(obj)
 }
+
+/**
+ * 
+ * @template T
+ * @param {T} obj 
+ * @param {(T) => void} action 
+ */
+function create(obj, action) {
+    action(obj)
+
+    return obj;
+}

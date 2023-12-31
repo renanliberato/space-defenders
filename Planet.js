@@ -6,6 +6,6 @@ class Planet extends CelestialObject {
 
     update() {
         super.update();
-        this.radius = this.baseRadius + sin(time * 3);
+        this.radius = this.baseRadius + sin(Time.time * 3);
     }
 }

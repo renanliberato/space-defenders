@@ -47,18 +47,18 @@ class Miner extends GameObject {
                 this.target = null;
                 return;
             } else {
-                this.pos = this.pos.moveTowards(dockPoint, this.speed * deltaTime);
+                this.pos = this.pos.moveTowards(dockPoint, this.speed * Time.deltaTime);
             }
 
             if (this.pos.distance(dockPoint) < this.radius) {
                 if (frameCount % (this.mineCooldown * 30) == 0) {
                     this.miningHit = true;
                     this.mine();
-                    this.lastMineTime = time;
+                    this.lastMineTime = Time.time;
                 }
             }
         } else {
-            this.pos = this.pos.moveTowards(this.docketPoint, this.speed * deltaTime);
+            this.pos = this.pos.moveTowards(this.docketPoint, this.speed * Time.deltaTime);
         }
     }
 

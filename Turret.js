@@ -52,7 +52,7 @@ class Turret extends GameObject {
         while (true) {
             switch (state) {
                 case 'undocking':
-                    this.pos = this.pos.moveTowards(undockTarget, this.undockSpeed * deltaTime)
+                    this.pos = this.pos.moveTowards(undockTarget, this.undockSpeed * Time.deltaTime)
 
                     if (this.pos.distance(undockTarget) <= 0.1) {
                         state = 'patrol';
@@ -66,7 +66,7 @@ class Turret extends GameObject {
                         // state = 'attack';
                         if (frameCount % (this.shootCooldown * 30) == 0) {
                             this.shoot();
-                            this.lastShootTime = time;
+                            this.lastShootTime = Time.time;
                         }
                         break;
                     }

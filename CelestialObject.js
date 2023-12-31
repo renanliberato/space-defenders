@@ -60,7 +60,7 @@ class CelestialObject extends GameObject {
     }
 
     update() {
-        this.updatePosition(deltaTime)
+        this.updatePosition(Time.deltaTime)
     }
 
     render() {
@@ -75,7 +75,7 @@ class CelestialObject extends GameObject {
             text(`${this.pos.x.toFixed(0)},${this.pos.y.toFixed(0)}`, this.pos.x, this.pos.y - this.radius - 15)
             var lineEnd = this.pos.add(this.velocity.normalized.multScalar(5))
             line(this.pos.x, this.pos.y, lineEnd.x, lineEnd.y)
-            text(`${(this.velocity.magnitude * deltaTime).toFixed(1)}u/s`, this.pos.x, this.pos.y - this.radius - 2)
+            text(`${(this.velocity.magnitude * Time.deltaTime).toFixed(1)}u/s`, this.pos.x, this.pos.y - this.radius - 2)
         }
     }
 }
